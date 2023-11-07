@@ -1,0 +1,67 @@
+secure:
+  ignored:
+    urls: #安全路径白名单
+      - /doc.html
+      - /swagger-ui/**
+      - /swagger/**
+      - /swagger-resources/**
+      - /**/v3/api-docs
+      - /**/*.js
+      - /**/*.css
+      - /**/*.png
+      - /**/*.ico
+      - /webjars/springfox-swagger-ui/**
+      - /actuator/**
+      - /druid/**
+      - /users/login
+      - /users/register
+      - /users/info
+      - /users/logout
+      - /user/login
+      - /hello
+server:
+  port: 8088
+
+spring:
+  application:
+    name: springboot-jwt
+  profiles:
+    active: dev
+  #图片上传
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
+  redis:
+    database: 1
+    host: localhost
+    lettuce:
+      pool:
+        max-active: 8   #最大连接数据库连接数,设 0 为没有限制
+        max-idle: 8     #最大等待连接中的数量,设 0 为没有限制
+        max-wait: -1ms  #最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。
+        min-idle: 0     #最小等待连接中的数量,设 0 为没有限制
+      shutdown-timeout: 100ms
+    password: 123456
+    port: 6379
+    
+
+config:
+  jwt:
+    # 密匙KEY
+    secret: JWTSecret
+    # HeaderKEY
+    tokenHeader: Authorization
+    # Token前缀字符
+    tokenPrefix: Security-c
+    # 过期时间 单位秒 1天后过期=86400 7天后过期=604800
+    expiration: 86400
+    # 配置不需要认证的接口
+    antMatchers: /index/**,/login/**,/favicon.ico,*.html,/index,/isPermission
+
+mybatis-plus:
+  global-config:
+    db-config:
+      #默认使用的是 assign_id,设置为auto,主键id自增
+      id-type: auto
