@@ -1,0 +1,135 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationBarBackgroundColor": "#fff",
+				"backgroundColor": "#fff"
+			}
+		}, {
+			"path": "pages/user/user",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+
+		},
+		{
+			"path": "pages/chat/chat",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //隐藏该页面滚动条
+				}
+			}
+
+		},
+		{
+			"path": "pages/my/my",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //隐藏该页面滚动条
+				}
+			}
+
+		},
+		{
+			"path": "pages/zone/zone",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //隐藏该页面滚动条
+				}
+			}
+
+		},
+		{
+			"path": "pages/home/home",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //隐藏该页面滚动条
+				}
+			}
+
+		},
+		{
+			"path": "pages/friend/friend",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //隐藏该页面滚动条
+				}
+			}
+
+		},
+		
+		{
+			"path": "pages/group/group",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"scrollIndicator": "none" //隐藏该页面滚动条
+				}
+			}
+		
+		}
+    ],
+	// "tabBar": {
+	// 	"color": "#707070",
+	// 	"selectedColor": "#12B7F5",
+	// 	"borderStyle": "black",
+	// 	"list": [{
+	// 			"pagePath": "pages/user/user",
+	// 			"iconPath": "/static/images/message.png",
+	// 			"selectedIconPath": "/static/images/message_1.png",
+	// 			"text": "消息"
+	// 		},
+	// 		{
+	// 			"pagePath": "pages/my/my",
+	// 			"iconPath": "/static/images/my.png",
+	// 			"selectedIconPath": "/static/images/my_1.png",
+	// 			"text": "联系人"
+	// 		},
+	// 		{
+	// 			"pagePath": "pages/zone/zone",
+	// 			"iconPath": "/static/images/zone.png",
+	// 			"selectedIconPath": "/static/images/zone_1.png",
+	// 			"text": "动态"
+	// 		}
+	// 	]
+	// },
+
+	"globalStyle": {
+
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"uniIdRouter": {},
+	"sockjs": {
+		"dev": false
+	},
+	//app页面不显示滚动条
+	"scrollIndicator": "none",
+
+	"sockjs-client": {
+		"dev": false
+	}
+}
