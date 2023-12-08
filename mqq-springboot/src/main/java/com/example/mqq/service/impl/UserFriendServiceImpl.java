@@ -35,7 +35,7 @@ public class UserFriendServiceImpl extends ServiceImpl<UserFriendMapper, UserFri
                 .leftJoin(UserFriend.class, UserFriend::getFid, User::getId)
                 .eq(UserFriend::getUid,id);
         System.out.println(wrapper);
-        List<User> users = userMapper.selectList( wrapper);
+        List<User> users = userMapper.selectList(wrapper);
 
         for (User record:users){
             System.out.println(record.getUsername());

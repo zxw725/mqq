@@ -9,7 +9,7 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 @SpringBootApplication
 public class MqqApplication {
     @Bean
-    public ServerEndpointExporter serverEndpointExporter(){
+    public ServerEndpointExporter serverEndpointExporter() {
         return new ServerEndpointExporter();
     }
     public static void main(String[] args) {

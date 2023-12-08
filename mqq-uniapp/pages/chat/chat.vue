@@ -1,32 +1,38 @@
 <template>
-	<view>
-		<view class="head-container">
-			<view class="iconfont icon-fanhui fanhui" @click="goBack(uid)"></view>
-			<!-- <img :src="headPicture" class="head-picture" alt=""> -->
-			{{username}}
-		</view>
-		<view class="chat-box">
-			<scroll-view class="content" :scroll-into-view="scrollIntoView" scroll-y="true" with-animation="false"
-				show-scrollbar="false">
-				<view class="message" v-for="(item,index) in messageBox" :id="'content'+index"
-					:class="(item.uid == userInfo.id?'user-context':'friend-context')">
-					<img :src="baseUrl+(item.uid == userInfo.id?userInfo.url:friendInfo.url)" alt=""
-						class="head-picture">
-					<view class="message-box">
-						<view class="chat-time">
-							{{item.time}}
-						</view>
-						<view class="chat-message">
-							{{item.message}}
+	<view class="">
+		<view class="container">
+			<view class="head-container">
+				<view class="iconfont icon-fanhui fanhui" @click="goBack(uid)"></view>
+				<!-- <img :src="headPicture" class="head-picture" alt=""> -->
+				{{username}}
+			</view>
+			<view class="chat-box">
+				<scroll-view class="content" :scroll-into-view="scrollIntoView" scroll-y="true" with-animation="false"
+					show-scrollbar="false">
+					<view class="message" v-for="(item,index) in messageBox" :id="'content'+index"
+						:class="(item.uid == userInfo.id?'user-context':'friend-context')">
+						<img :src="baseUrl+(item.uid == userInfo.id?userInfo.url:friendInfo.url)" alt=""
+							class="head-picture">
+						<view class="message-box">
+							<view class="chat-time">
+								{{item.time}}
+							</view>
+							<view class="chat-message">
+								{{item.message}}
+							</view>
 						</view>
 					</view>
-				</view>
-			</scroll-view>
+				</scroll-view>
 
-		</view>
-		<view class="bottom-container">
-			<input type="text" v-model="chatText" @confirm="handleEnterKey()" class="chat-input">
-			<button :class="chatText!=''?'chat-submit-ing':'chat-submit'" @click="sendMessage()">发送</button>
+			</view>
+			<view class="bottom-container">
+				<view class="chat-input">
+					<textarea v-model="chatText" :focus="focus" @blur="isBlur" @focus="isFocus"
+						style="white-space: pre-wrap;width: 100%;max-height: 290rpx;overflow: scroll;"
+					 :adjust-position="false"	:cursor-spacing="8" class="" placeholder="" auto-height ref="input"></textarea>
+				</view>
+				<button :class="chatText!=''?'chat-submit-ing':'chat-submit'" @click="sendMessage()">发送</button>
+			</view>
 		</view>
 	</view>
 </template>
@@ -63,19 +69,39 @@
 				userInfo: {},
 				friendInfo: {},
 				socket: '',
-				scrollIntoView: 'content0'
+				scrollIntoView: 'content0',
+				pages: 0,
+				focus: false,
+				textareaValue: '',
+				cursorPosition: 0,
 			}
 		},
 		methods: {
+			setCaretPosition(elId, caretPos) {
+				// 设置光标位置
+				const el = uni.createSelectorQuery().select('#' + elId);
+				el.fields({
+					properties: ['value', 'selectionStart', 'selectionEnd']
+				}, (res) => {
+					el.setSelectionRange(caretPos, caretPos);
+					el.focus();
+				}).exec();
+			},
+			isBlur() {
+				console.log(45779);
+			},
+			isFocus() {
+				
+			},
 			handleEnterKey() {
 				// 处理回车键触发的事件
 				console.log(111111);
 				console.log("Enter key pressed!");
-				this.sendMessage()
+				// this.sendMessage()
 			},
 			goBack() {
-				uni.switchTab({
-					url: `/pages/user/user`
+				uni.navigateTo({
+					url: `/pages/home/home`
 				})
 			},
 			filterTime(time) {
@@ -134,7 +160,6 @@
 			},
 			filterSfm(num) {
 				num = num + ""
-
 				return num.length == 1 ? "0" + num : num
 			},
 			getNow() {
@@ -208,7 +233,7 @@
 					})
 				})
 			},
-			fetchDataFromServer(){
+			fetchDataFromServer() {
 				getAllMessage(this.id, this.uid).then(res => {
 					this.messageBox = res.data.data
 					console.log(res);
@@ -224,6 +249,12 @@
 				selectUser(this.uid).then(res => {
 					this.friendInfo = res.data.data
 				})
+			},
+			handleBackPress() {
+				// 处理返回键按下的逻辑
+				console.log('返回键被按下了');
+				// 如果要阻止默认返回行为，可以调用uni.navigateBack或者return false
+				// uni.navigateBack();
 			}
 		},
 		mounted() {
@@ -231,18 +262,76 @@
 			this.id = this.$route.query.uid
 			this.uid = this.$route.query.id
 			this.initWebSocket()
-			console.log(123111);
 			console.log(this.$route.query.uid);
 			this.fetchDataFromServer()
-
 		},
 		onLoad(options) {
-			
 			this.username = options.username
 			this.id = options.uid
 			this.uid = options.id
 			this.fetchDataFromServer()
+			this.pages = getCurrentPages();
 		},
+		watch: {
+			pages(newVal, oldVal) {
+				// 监听文本框值的改变
+				if (newVal !== oldVal) {
+					
+
+				}
+			},
+			chatText(newVal, oldVal) {
+				// 监听文本框值的改变
+				if (newVal !== oldVal) {
+					const input = this.$refs.input;
+					console.log(input);
+					// input.selectionStart = input.se
+					console.log(newVal);
+					this.focus = true
+					// 执行需要在文本框值改变时执行的方法
+
+				}
+			}
+		},
+		onBackPress(options) {
+			// 触发返回就会调用此方法，这里实现的是禁用物理返回，顶部导航栏的自定义返回 uni.navigateBack 仍可使用
+			uni.navigateTo({
+				url: "/pages/home/home"
+			})
+			if (options.from == 'backbutton') {
+				uni.navigateTo({
+					url: "/pages/home/home"
+				})
+				return true;
+			} else if (options.from == 'navigateBack') {
+
+				uni.navigateTo({
+					url: "/pages/home/home"
+				})
+				return false;
+			}
+		},
+		onUnload() {
+			// 判断是否是通过返回按钮离开页面
+			const pages = getCurrentPages();
+			console.log(121113);
+			if (pages.length === 1) {
+				// 用户点击了返回按钮
+				console.log('用户点击了返回按钮');
+				uni.navigateTo({
+					url: "/pages/home/home"
+				})
+				// 处理返回逻辑
+			} else {
+				// 用户点击了tabbar或另外一个页面链接
+				console.log('用户点击了tabbar或另外一个页面链接');
+				uni.navigateTo({
+					url: "/pages/home/home"
+				})
+			}
+			// window.removeEventListener("popstate", this.browserBack);
+		},
+
 		onShow() {
 			this.initWebSocket()
 		},
@@ -255,6 +344,13 @@
 <style scoped>
 	@import url("../../uni_modules/uni-icons/components/uni-icons/uniicons.css");
 	@import "@/static/iconfont/iconfont.css";
+
+	.container {
+		box-sizing: border-box;
+		background: #019AFE;
+		width: 100%;
+		height: 100vh;
+	}
 
 	.friend-context {
 		display: flex;
@@ -284,6 +380,7 @@
 	.chat-message {
 		max-width: 500rpx;
 		word-wrap: break-word;
+		white-space: pre-wrap;
 	}
 
 	.user-context .message-box {
@@ -326,10 +423,11 @@
 	.chat-box {
 		background: #F1F1F1;
 		width: 100%;
-		height: calc(100vh - 180rpx);
+		height: calc(100vh - 90rpx);
 		box-sizing: border-box;
 		overflow: hidden;
-		padding: 0 !important;
+		padding-top: 150rpx !important;
+		box-sizing: border-box;
 	}
 
 	* {
@@ -348,7 +446,7 @@
 	}
 
 	.message:nth-last-child(1) {
-		margin-bottom: 50rpx;
+		margin-bottom: 90rpx;
 	}
 
 	::webkit-scrollbar {
@@ -370,12 +468,22 @@
 
 	.chat-input {
 		background: white;
-		height: 80rpx;
-		padding: 0 20rpx;
+		/* height: 80rpx; */
+		max-height: 320rpx;
+		display: flex;
+		/* align-items: center; */
+		padding: 15rpx 20rpx;
 		box-sizing: border-box;
 		font-size: 35rpx;
-		caret-color: #4772ff55;
+		caret-color: #4772ff;
+		align-items: flex-start;
+		white-space: pre-wrap;
+		/* padding-top: 15rpx; */
 		width: 100%;
+		border-radius: 10rpx;
+		/* overflow: hidden; */
+		/* padding-bottom: ; */
+		/* margin-bottom: 15rpx; */
 	}
 
 	.chat-submit-ing,
@@ -396,6 +504,7 @@
 	}
 
 	.bottom-container {
+		/* max-height:400rpx; */
 		display: flex;
 		position: absolute;
 		bottom: 0;
@@ -403,7 +512,9 @@
 		padding: 18rpx 30rpx;
 		box-sizing: border-box;
 		background: #F8F9F9;
-		align-items: center;
+		align-items: flex-end;
+		overflow: hidden;
+
 	}
 
 	* {
@@ -420,7 +531,7 @@
 	.head-container {
 		background: linear-gradient(to right, #90d7f8, #8b91f8);
 		width: 100%;
-		height: 110rpx;
+		height: 150rpx;
 		padding: 15rpx 30rpx;
 		box-sizing: border-box;
 		justify-content: center;
@@ -428,5 +539,10 @@
 		align-items: center;
 		color: white;
 		font-size: 38rpx;
+		padding-top: 50rpx;
+		box-sizing: border-box;
+		position: fixed;
+		z-index: 11;
+		top: 0;
 	}
 </style>

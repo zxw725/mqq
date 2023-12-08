@@ -1,14 +1,14 @@
 <template>
 	<view class="container">
-	<view class="head-container">
-		<img :src="headPicture" class="head-picture" alt="">
-		<view class="head-title">
-			动态
+		<view class="head-container">
+			<img :src="headPicture" class="head-picture" alt="">
+			<view class="head-title">
+				动态
+			</view>
+			<view class="iconfont icon-tianjiahaoyou tianjiahaoyou" @click="editZone()">
+
+			</view>
 		</view>
-		<view class="iconfont icon-tianjiahaoyou tianjiahaoyou">
-		
-		</view>
-	</view>
 	</view>
 </template>
 
@@ -31,7 +31,7 @@
 			}
 		},
 		methods: {
-			init(){
+			init() {
 				this.username = uni.getStorageSync('uid');
 				selectUser(this.username).then(res => {
 					this.user = res.data.data
@@ -41,6 +41,12 @@
 					// console.log(this.headPicture);
 				}).catch(err => {
 					console.log(err);
+				})
+			},
+			editZone(){
+				console.log(123);
+				uni.navigateTo({
+					url:'/pages/editZone/editZone'
 				})
 			}
 		},
@@ -57,15 +63,17 @@
 </script>
 
 <style scoped>
-	.tianjiahaoyou{
+	.tianjiahaoyou {
 		font-size: 60rpx;
 		color: white;
 	}
-	.head-title{
+
+	.head-title {
 		color: white;
 		font-size: 36rpx;
 		font-weight: 540;
 	}
+
 	.container,
 	.container1 {
 		width: 100%;
@@ -89,7 +97,7 @@
 		justify-content: space-between;
 		align-items: center;
 	}
-	
+
 	.username {
 		color: #ffffff;
 		margin-left: 15rpx;

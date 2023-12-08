@@ -29,5 +29,8 @@ public class UserFriend implements Serializable {
     @TableField("fid")
     private Integer fid;
 
+    @TableField("nickname")
+    private String nickname;
+
 
 }

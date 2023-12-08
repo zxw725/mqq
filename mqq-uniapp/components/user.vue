@@ -93,8 +93,11 @@
 				selectUser(this.username).then(res => {
 					this.user = res.data.data
 					console.log(res.data.data);
+					console.log(this.user.username);
+					// this.user.username = 11111
 					// console.log(this.baseUrl);
 					this.headPicture = `${this.baseUrl+this.user.url}`
+					this.$forceUpdate()
 					// console.log(this.headPicture);
 				}).catch(err => {
 					console.log(err);
@@ -102,7 +105,10 @@
 				selectAllFriends(this.username).then(res => {
 					this.userFriends = res.data.data
 					console.log(res.data.data[0].username);
+					this.$forceUpdate()
 				})
+				
+				// this.init()
 			}
 		},
 		onHide() {
@@ -113,14 +119,16 @@
 			console.log("show");
 			 this.$emit("changeShowModal", 0)
 			// this.showModel = 0
+			
 		},
 		mounted() {
-			console.log(this.showModel1);
 			this.username = uni.getStorageSync('uid');
 			this.init()
+			
 		},
 		onLoad(options) {
 			this.username = uni.getStorageSync('uid');
+			this.init()
 			// this.init()
 			uni.navigateTo({
 				url: `/pages/home/home`

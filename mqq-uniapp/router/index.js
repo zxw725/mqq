@@ -14,17 +14,16 @@ const routes = [{
 		name: 'Chat',
 		component: () => import('@/pages/chat/chat.vue')
 	},
-
+	{
+		path: '/pages/editZone/editZone',
+		name: 'EditZone',
+		component: () => import('@/pages/editZone/editZone.vue')
+	},
 	{
 		path: '/pages/home/home',
 		name: 'Home',
 		component: () => import('@/pages/home/home.vue'),
-		children: [{
-				path: '/pages/user/user',
-				// aliasPath: '/pages/user/user',
-				name: 'User',
-				component: () => import('@/pages/user/user.vue')
-			},
+		children: [
 			{
 				path: '/pages/my/my',
 				name: 'My',

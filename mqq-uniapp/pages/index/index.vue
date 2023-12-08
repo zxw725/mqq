@@ -33,8 +33,12 @@
 	</view>
 </template>
 <script>
-	import {login} from "../../api/user.js"
-	import {setToken} from "../../utils/auth.js"
+	import {
+		login,selectUser
+	} from "../../api/user.js"
+	import {
+		setToken
+	} from "../../utils/auth.js"
 	export default {
 		data() {
 			return {
@@ -51,41 +55,55 @@
 				statusBarHeight: 0,
 			}
 		},
+		onUnload() {
+			window.removeEventListener("popstate", this.browserBack);
+		},
 		created() {
 			this.statusBarHeight = uni.getSystemInfoSync()["statusBarHeight"];
 		},
 		methods: {
 			loginUser() {
 				// console.log(this.username,this.password);
-				uni.navigateTo({
-					url: `/pages/home/home`
+				// uni.navigateTo({
+				// 	url: `/pages/home/home`
+				// })
+				login({
+					username: this.username,
+					password: this.password
+				}).then(res => {
+					if (res.data.code == 200) {
+						console.log(res.data.data);
+						setToken(res.data.data);
+					}
+					uni.setStorageSync('uid', this.username);
+					selectUser(this.username).then(res => {
+						this.user = res.data.data
+						console.log(res.data.data);
+						uni.setStorageSync('user', res.data.data);
+						console.log(this.user.username);
+						// this.user.username = 11111
+						// console.log(this.baseUrl);
+						this.headPicture = `${this.baseUrl+this.user.url}`
+						this.$forceUpdate()
+						// console.log(this.headPicture);
+					}).catch(err => {
+						console.log(err);
+					})
+					// plus.nativeUI.toast('登录成功');
+					console.log(123);
+					uni.navigateTo({
+						url: `/pages/home/home`
+					})
+				}).catch((err) => {
+					uni.showToast({
+						title: "用户名不存在或账号密码不一致",
+						icon: "error"
+					})
+
+					console.log(err);
 				})
-				// login({username:this.username,password:this.password}).then(res=>{
-				// 	if(res.data.code==200){
-				// 		console.log(res.data.data);
-				// 		setToken(res.data.data);
-				// 	}
-				// 	uni.setStorageSync('uid',this.username);
-				// 	uni.showToast({
-				// 		title: '登录成功', //显示的文字
-				// 		icon: 'success' //显示的图标
-				// 	});
-				// 	console.log(123);
-				// 	uni.navigateTo({
-				// 		url: `/pages/home/home`
-				// 	})
-				// }).catch((err)=>{
-				// 	uni.showToast({
-				// 		title:"用户名不存在或账号密码不一致",
-				// 		icon:"error"
-				// 	})
-					
-				// 	console.log(err);
-				// })
-				// uni.request({
-				// 	url:
-				// })
-				
+
+
 			},
 			clear(index1) {
 				if (index1 == 0) {
@@ -143,6 +161,9 @@
 				}
 			}
 
+		},
+		onLoad(){
+			
 		}
 	}
 </script>
@@ -191,7 +212,7 @@
 	}
 
 	.enter-icon1 {
-		background: linear-gradient(to bottom right,#136ff855,#136ff8aa,#136ff8cc,#136ff8ee,#136ff8ee,#136ff8aa,#136ff899) ;
+		background: linear-gradient(to bottom right, #136ff855, #136ff8aa, #136ff8cc, #136ff8ee, #136ff8ee, #136ff8aa, #136ff899);
 	}
 
 	.icon-eye1 {

@@ -5,7 +5,8 @@
     "js-cookie": "^3.0.5",
     "uni-read-pages": "^1.0.5",
     "uni-simple-router": "^2.0.7",
-    "vue-router": "^3.6.5"
+    "vue-router": "^3.6.5",
+    "wangeditor": "^4.7.15"
   },
   "devDependencies": {
     "blueimp-md5": "^2.19.0"
